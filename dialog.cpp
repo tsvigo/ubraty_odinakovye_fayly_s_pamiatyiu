@@ -14,6 +14,8 @@ using namespace std;
 #include <QTextStream>
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+#include <QDir>
+#include <QDebug>
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// \brief Dialog::Dialog
 /// \param parent
@@ -27,20 +29,21 @@ Dialog::Dialog(QWidget *parent)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// .
 QProcess process2;
+// получает список имён файлов
 QString  stroka_obnovity_spisok=
-"cd /home/viktor/my_projects_qt_2/kartinki_iz_shriftov/papka-fonts-sort/obrez_snizu/polniy_obrez/black-white/ && ls > /home/viktor/my_projects_qt_2/kartinki_iz_shriftov/papka-fonts-sort/obrez_snizu/polniy_obrez/black-white/spisok.txt";          
+"cd /mnt/97d838cf-b3a1-4c1d-9c9d-cf745cf3116a/загрузки/imageye2/vihod/black-white/ && ls > /home/viktor/my_projects_qt_2/ubraty_odinakovye_fayly_s_pamiatyiu/spisok.txt";          
              process2.start(stroka_obnovity_spisok.toStdString().c_str());
     process2.waitForFinished(-1); // will wait forever until finished
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////// загрузка синапсов из файла в вектор ////////////////////////////////////////////////////////////////////////////////////////// 
-   std::ifstream is2("/home/viktor/my_projects_qt_2/kartinki_iz_shriftov/papka-fonts-sort/obrez_snizu/polniy_obrez/black-white/spisok.txt");  
+///////////////////////////////////// загрузка имён файлов из файла в вектор ////////////////////////////////////////////////////////////////////////////////////////// 
+   std::ifstream is2("/home/viktor/my_projects_qt_2/ubraty_odinakovye_fayly_s_pamiatyiu/spisok.txt");  
      std::istream_iterator<std::string> start2(is2), end2;  
      std::vector<std::string> list_of_fonts(start2, end2);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
    QString stroka1=
-   "magick compare -metric MAE \"/home/viktor/my_projects_qt_2/kartinki_iz_shriftov/papka-fonts-sort/obrez_snizu/polniy_obrez/black-white/";
+   "magick compare -metric MAE \"/mnt/97d838cf-b3a1-4c1d-9c9d-cf745cf3116a/загрузки/imageye2/vihod/black-white/";
 //list_of_fonts[0]; 
-QString stroka2="\" \"/home/viktor/my_projects_qt_2/kartinki_iz_shriftov/papka-fonts-sort/obrez_snizu/polniy_obrez/black-white/";
+QString stroka2="\" \"/mnt/97d838cf-b3a1-4c1d-9c9d-cf745cf3116a/загрузки/imageye2/vihod/black-white/";
 //list_of_fonts[1] ;
 QString stroka3="\" null: 2>&1"; 
 bool file_stiort=false;
@@ -49,8 +52,36 @@ QString  stroka_vsia;
 int y=0;
 int x=y+1;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// 
+/// 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
 // TODO: прочитать x и y из файла
-QFile inputFile("/home/viktor/my_projects_qt_2/ubraty_odinakovye_fayly_s_vihodom/x.txt");
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// Если файла /home/viktor/my_projects_qt_2/ubraty_odinakovye_fayly_s_pamiatyiu/x.txt нет создать его и записать в него 0 в qt c++ Linux
+/// 
+   QString filePath = "/home/viktor/my_projects_qt_2/ubraty_odinakovye_fayly_s_pamiatyiu/x.txt";
+    
+    // Создаем директорию, если она не существует
+    QFileInfo fileInfo(filePath);
+    QDir dir(fileInfo.path());
+    if (!dir.exists()) {
+        dir.mkpath(fileInfo.path());
+    }
+    
+    // Создаем и открываем файл
+    QFile file(filePath);
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&file);
+        out << "1"; // Записываем значение 0 в файл
+        file.close();
+    } else {
+        qDebug() << "Не удалось создать файл:" << file.errorString();
+    }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+/// 
+// читает x на котором остановился
+QFile inputFile("/home/viktor/my_projects_qt_2/ubraty_odinakovye_fayly_s_pamiatyiu/x.txt");
 if (inputFile.open(QIODevice::ReadOnly))
 {
    QTextStream in(&inputFile);
@@ -61,9 +92,30 @@ if (inputFile.open(QIODevice::ReadOnly))
    }
    inputFile.close();
 }
-
-
-QFile inputFile2("/home/viktor/my_projects_qt_2/ubraty_odinakovye_fayly_s_vihodom/y.txt");
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// Если файла /home/viktor/my_projects_qt_2/ubraty_odinakovye_fayly_s_pamiatyiu/y.txt нет создать его и записать в него 0 в qt c++ Linux
+/// 
+   QString filePath2 = "/home/viktor/my_projects_qt_2/ubraty_odinakovye_fayly_s_pamiatyiu/y.txt";
+    
+    // Создаем директорию, если она не существует
+    QFileInfo fileInfo2(filePath2);
+    QDir dir2(fileInfo2.path());
+    if (!dir2.exists()) {
+        dir2.mkpath(fileInfo2.path());
+    }
+    
+    // Создаем и открываем файл
+    QFile file2(filePath2);
+    if (file2.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&file2);
+        out << "0"; // Записываем значение 0 в файл
+        file2.close();
+    } else {
+        qDebug() << "Не удалось создать файл:" << file2.errorString();
+    }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+// читает y на котором остановился
+QFile inputFile2("/home/viktor/my_projects_qt_2/ubraty_odinakovye_fayly_s_pamiatyiu/y.txt");
 if (inputFile2.open(QIODevice::ReadOnly))
 {
    QTextStream in(&inputFile2);
@@ -75,9 +127,9 @@ if (inputFile2.open(QIODevice::ReadOnly))
    inputFile.close();
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    for (;y<1421 ; y++)  
+    for (;y<356 ; y++)  
     {
-     for ( ;x<1420 ; x++)  
+     for ( ;x<355 ; x++)  
         {
                stroka_vsia=stroka1+list_of_fonts[y].c_str()+stroka2+list_of_fonts[x].c_str()  +stroka3;
              
@@ -92,7 +144,7 @@ if (inputFile2.open(QIODevice::ReadOnly))
  if (stderr=="0 (0)")   
              {
 // std::cout << "!!!!!!"<< std::endl ; // TODO: стереть файл второй
-QString name_of_file="/home/viktor/my_projects_qt_2/kartinki_iz_shriftov/papka-fonts-sort/obrez_snizu/polniy_obrez/black-white/"
+QString name_of_file="/mnt/97d838cf-b3a1-4c1d-9c9d-cf745cf3116a/загрузки/imageye2/vihod/black-white/"
 +QString::fromStdString(list_of_fonts[x]); // QString::fromStdString(str);
  file_stiort=QFile::remove(name_of_file);
             if (file_stiort ==true)
@@ -102,14 +154,14 @@ QString name_of_file="/home/viktor/my_projects_qt_2/kartinki_iz_shriftov/papka-f
             
              }
              // тут внутренний цикл значит меняется x
-              QFile file("/home/viktor/my_projects_qt_2/ubraty_odinakovye_fayly_s_vihodom/x.txt");
+              QFile file("/home/viktor/my_projects_qt_2/ubraty_odinakovye_fayly_s_pamiatyiu/x.txt");
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {;;}
         QTextStream out(&file);
     out << x;
      file.close(); 
           }
           // тут внешний цикл значит меняется y
-           QFile file2("/home/viktor/my_projects_qt_2/ubraty_odinakovye_fayly_s_vihodom/y.txt");
+           QFile file2("/home/viktor/my_projects_qt_2/ubraty_odinakovye_fayly_s_pamiatyiu/y.txt");
     if (!file2.open(QIODevice::WriteOnly | QIODevice::Text)) {;;}
          QTextStream out2(&file2);
     out2 << y;
